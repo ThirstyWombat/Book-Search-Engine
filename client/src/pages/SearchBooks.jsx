@@ -3,7 +3,7 @@ import { Container, Col, Form, Button, Card, Row } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 import { SAVE_BOOK } from "../utils/mutations";
 import Auth from "../utils/auth";
-import { saveBook, searchGoogleBooks } from "../utils/API";
+import { searchGoogleBooks } from "../utils/API";
 import { saveBookIds, getSavedBookIds } from "../utils/localStorage";
 
 const SearchBooks = () => {
@@ -58,7 +58,7 @@ const SearchBooks = () => {
   const handleSaveBook = async (bookId) => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    console.log("this is the book to save: ", bookToSave);
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
@@ -67,8 +67,8 @@ const SearchBooks = () => {
     }
 
     try {
-      const { data } = await saveBook({
-        variables: { bookData: bookToSave },
+      await saveBook({
+        variables: { input: bookToSave },
       });
 
       // if book successfully saves to user's account, save book id to state

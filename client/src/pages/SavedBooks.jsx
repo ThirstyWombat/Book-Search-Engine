@@ -19,7 +19,7 @@ const SavedBooks = () => {
     }
 
     try {
-      const { data } = await removeBook({
+      await removeBook({
         variables: { bookId },
       });
       // upon success, remove book's id from localStorage
@@ -52,8 +52,8 @@ const SavedBooks = () => {
         <Row>
           {userData.savedBooks.map((book) => {
             return (
-              <Col md="4">
-                <Card key={book.bookId} border="dark">
+              <Col key={book.bookId} md="4">
+                <Card border="dark">
                   {book.image ? (
                     <Card.Img
                       src={book.image}
