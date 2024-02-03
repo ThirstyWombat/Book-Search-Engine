@@ -39,11 +39,12 @@ const resolvers = {
 
       return { token, user };
     },
-    saveBook: async (parent, { args }, context) => {
+    saveBook: async (parent, { input }, context) => {
+      console.log("resolvers saveBook call with: ", input);
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: context.user._id },
-          { $addToSet: { savedBooks: args } },
+          { $addToSet: { savedBooks: input } },
           {
             new: true,
             runValidators: true,
@@ -53,10 +54,12 @@ const resolvers = {
       throw AuthenticationError;
     },
     removeBook: async (parent, { bookId }, context) => {
+      console.log("this is the user context: ", context);
+      console.log("resolvers remove book call with: ", bookId);
       if (context.user) {
         return User.findOneAndUpdate(
           { _id: context.user._id },
-          { $pull: { savedBooks: bookId } },
+          { $pull: { savedBooks: { bookId: bookId } } },
           { new: true }
         );
       }
